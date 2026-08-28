@@ -6,7 +6,7 @@ def esCuadrada(A): #ya probada
     return m == n
 
 
-def triangSup(A):
+def triangSup(A): #no esta en modulo
     m,n = A.shape
     res = np.zeros((m,n))
     for i in range(m):
@@ -16,7 +16,7 @@ def triangSup(A):
     return res
 
 
-def triangInf(A):
+def triangInf(A): #no esta en modulo
     m,n = A.shape
     res = np.zeros((m,n))
     for i in range(m):
@@ -26,7 +26,7 @@ def triangInf(A):
     return res
 
 
-def diagonal(A):
+def diagonal(A): #ya probada
     m, n = A.shape
 
     res = np.zeros((m,n))
@@ -37,7 +37,7 @@ def diagonal(A):
     return res
 
 
-def traza(A):
+def traza(A): #ya probada
     res = 0
     m,n = A.shape
     if not esCuadrada(A):
@@ -48,7 +48,7 @@ def traza(A):
     return res
 
 
-def traspuesta(A):
+def traspuesta(A): #ya probada
     m,n = A.shape
     res = np.zeros((n,m))
 
@@ -58,7 +58,7 @@ def traspuesta(A):
     return res 
 
 
-def esSimetrica(A):
+def esSimetrica(A): #ya probada
     A_tras = traspuesta(A)
     res = True
     m,n = A.shape
@@ -72,9 +72,6 @@ def esSimetrica(A):
     
 
 
-a = np.array([[1,2,3],[2,5,6],[3,6,9]])
-
-print(a)
 
 
 
