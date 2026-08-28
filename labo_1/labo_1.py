@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def error(x,y):
+def error(x,y): #ya probado
     x_float64 = np.float64(x)
     y_float64 = np.float64(y)
 
@@ -10,19 +10,13 @@ def error(x,y):
     return res
 
 
-def error_relativo(x,y):
+def error_relativo(x,y): #ya probado
   
     res = np.abs(error(x,y)/x)
 
     return res
 
-def esCuadrada(A):
-    m, n = A.shape
-
-    return m == n
-
-
-def matricesIguales(A,B):
+def matricesIguales(A,B): #ya probado
     a,b = A.shape
     c,d = B.shape
 
@@ -34,7 +28,7 @@ def matricesIguales(A,B):
         res = True
         for i in range(a):
             for j in range(b):
-                if error(A[i][j],B[i][j]) != 0:
+                if error(A[i][j],B[i][j]) > 1e-15:
                     res = False
                     break
     return res
@@ -55,7 +49,9 @@ assert(np.allclose(error_relativo(-1,-1),0))
 assert(np.allclose(error_relativo(1,-1),2))
 
 assert(matricesIguales(np.diag([1,1]),np.eye(2)))
-#assert(matricesIguales(np.linalg.inv(np.array([[1,2],[3,4]]))@np.array([[1,2],[3,4]]),np.eye(2)))
+assert(matricesIguales(np.linalg.inv(np.array([[1,2],[3,4]]))@np.array([[1,2],[3,4]]),np.eye(2)))
 assert(not matricesIguales(np.array([[1,2],[3,4]]).T,np.array([[1,2],[3,4]])))
+
+
 
 

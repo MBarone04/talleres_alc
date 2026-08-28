@@ -1,6 +1,6 @@
 import numpy as np
 
-def esCuadrada(A):
+def esCuadrada(A): #ya probada
     m, n = A.shape
 
     return m == n
