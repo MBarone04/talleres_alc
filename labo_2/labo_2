@@ -7,7 +7,26 @@ Created on Tue Aug 25 11:33:52 2026
 """
 import numpy as np
 
-def rota(theta):
+def mult_matricial(A,B):
+    a,b = A.shape
+    c,d = B.shape
+
+    if b != c:
+        raise ValueError(
+            "Las columnas de A no coinciden con las filas de B"
+        )
+    res = np.zeros((a,d))
+
+    for i in range(a):
+        for j in range(d):
+            num = 0
+            for k in range(b):
+                num += A[i,k]*B[k,j]
+            res[i,j] = num
+
+    return res
+
+def rota(theta): #ya probado
     
     T = np.array([[np.cos(theta),-np.sin(theta)],[np.sin(theta),np.cos(theta)]])
     
@@ -18,9 +37,9 @@ assert(np.allclose(rota(np.pi/2),np.array([[0,-1],[1,0]])))
 assert(np.allclose(rota(np.pi),np.array([[-1,0],[0,-1]])))
 
 #%%
-def escala(s):
+def escala(s): #ya probada
     n = len(s)
-    res = np.zeros(n,n)
+    res = np.zeros((n,n))
     
     for i in range(n):
         res[i,i] = s[i]
@@ -30,3 +49,37 @@ def escala(s):
 assert(np.allclose(escala([2,3]),np.array([[2,0],[0,3]])))
 assert(np.allclose(escala([1,1,1]),np.eye(3)))
 assert(np.allclose(escala([0.5,0.25]),np.array([[0.5,0],[0,0.25]])))
+
+def rota_y_escala(theta,s): #ya probada
+    
+    return mult_matricial(escala(s),rota(theta))
+
+def afin(theta,s,b): #ya probado
+    res = np.eye(3)
+
+    rotado = rota_y_escala(theta,s)
+
+    m,n = rotado.shape
+    for i in range(m):
+        for j in range(n):
+            res[i,j] = rotado[i,j]
+
+    res[0,2] = b[0]
+    res[1,2] = b[1]
+
+    return res
+
+def trans_afin(v,theta,s,b):
+
+    
+    m_rotado = rota_y_escala(theta,s)
+
+    A = mult_matricial(m_rotado,v)
+    w = afin(0,A,b)
+
+    return w
+    
+
+    
+
+
