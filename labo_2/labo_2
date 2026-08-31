@@ -22,6 +22,8 @@ def mult_matricial(A,B):
             num = 0
             for k in range(b):
                 num += A[i,k]*B[k,j]
+                if abs(num) < 1e-10:
+                    num = 0.0
             res[i,j] = num
 
     return res
@@ -70,16 +72,18 @@ def afin(theta,s,b): #ya probado
     return res
 
 def trans_afin(v,theta,s,b):
-
+    b_arr = np.array(b)
     
-    m_rotado = rota_y_escala(theta,s)
+    m = afin(theta,s,b_arr)
+    v_arr = np.array([[v[0]], 
+                      [v[1]], 
+                      [1.0]])
+    
+    w_homogéneo = mult_matricial(m,v_arr)
 
-    A = mult_matricial(m_rotado,v)
-    w = afin(0,A,b)
-
-    return w
+    return w_homogéneo[:2,0]
     
 
-    
-
-
+assert(np.allclose(trans_afin(np.array([1,0]),np.pi/2,[1,1],[0,0]),np.array([0,1])))
+assert(np.allclose(trans_afin(np.array([1,1]),0,[2,3],[0,0]),np.array([2,3])))
+assert(np.allclose(trans_afin(np.array([1,0]),np.pi/2,[3,2],[4,5]),np.array([4,7])))
