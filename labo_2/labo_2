@@ -22,6 +22,8 @@ def mult_matricial(A,B):
             num = 0
             for k in range(b):
                 num += A[i,k]*B[k,j]
+                if num < 1e-08:
+                    num = 0
             res[i,j] = num
 
     return res
