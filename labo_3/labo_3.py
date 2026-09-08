@@ -1,29 +1,25 @@
 import numpy as np
 
 
-def norma(x,p):
+def norma(x,p): #ya probado
     res = 0
     i_p = []
 
     if p == 'inf':
-        list = []
+        
         max = 0
         for i in range(len(x)):
-            list.append(x[i])
-        for j in range(len(list)):
-            if list[j] > max:
-                max = list[j]
-        res = abs(max)
+            x_abs = abs(x[i])
+            if x_abs > max:
+                max = x_abs
+        res = max
 
 
     else:
         for i in range(len(x)):
             x_i = abs(x[i])          
             x_i = x_i**p
-            i_p.append(x_i)
-
-        for i in range(len(i_p)):
-            res += i_p[i]
+            res += x_i
         res = res**(1/p)
     return res
 
@@ -57,6 +53,7 @@ def normaMatMC(A, q , p ,Np):
     max_norma = 0
     for _ in range(Np):
         x = np.array(np.random.rand(A.shape[1]))
+
         den = norma(x,p)
         if den == 0:
             continue
@@ -88,28 +85,26 @@ nMC = normaMatMC(A=A,q='inf',p='inf',Np=1000000)
 #assert(np.allclose(nMC[0],normaExacta(A,'inf'),rtol=2e-1)) 
 
 
-def normaExacta(A, p=[1,'inf']):
+def normaExacta(A, p=1):
     m,n = A.shape
     max_suma_col = 0
     max_suma_fila = 0
 
     if p == 1:
-        for _ in range(m):   
-            for j in range(n):
-                suma_col = 0
-                for k in range(m):
-                    suma_col += abs(A[k][j])
-                if suma_col > max_suma_col:
-                    max_suma_col = suma_col
+        for j in range(n):
+            suma_col = 0
+            for k in range(m):
+                suma_col += abs(A[k][j])
+            if suma_col > max_suma_col:
+                max_suma_col = suma_col
         return max_suma_col
     elif p == 'inf':
         for i in range(m):   
-            for _ in range(n):
-                suma_fila = 0
-                for k in range(m):
-                    suma_fila += abs(A[i][k])
-                if suma_fila > max_suma_fila:
-                    max_suma_fila = suma_fila
+            suma_fila = 0
+            for k in range(n):
+                suma_fila += abs(A[i][k])
+            if suma_fila > max_suma_fila:
+                max_suma_fila = suma_fila
         return max_suma_fila
     else:
         return None
@@ -121,7 +116,7 @@ assert(normaExacta(np.array([[1,-2],[-3,-4]]),2) is None)
 assert(normaExacta(np.random.random((10,10)),1)<=10)
 assert(normaExacta(np.random.random((4,4)),'inf')<=4)
 
-def condMC(A,p,Np):
+def condMC(A,p,Np): #ya probado
     A_inv = np.linalg.inv(A)
 
     norma_A = normaMatMC(A,p,p,Np)[0]
@@ -142,8 +137,10 @@ normaA = normaMatMC(A,2,2,10000)
 normaA_ = normaMatMC(A_,2,2,10000)
 condA = condMC(A,2,10000)
 assert(np.allclose(normaA[0]*normaA_[0],condA,atol=1e-3))
+print(normaA[0]*normaA_[0],condA)
 
-def condExacta(A,p):
+
+def condExacta(A,p): #ya probada
     A_inv = np.linalg.inv(A)
 
     norma_A = normaExacta(A,p)
