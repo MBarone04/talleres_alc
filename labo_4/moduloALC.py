@@ -24,6 +24,17 @@ def diagonal(A): #ya probada
                 res[i,j] = A[i,j]
     return res
 
+def esSimetrica(A): #ya probada
+    if A is None:
+        return False
+    A_tras = traspuesta(A)
+    m,n = A.shape
+    for i in range(m):
+        for j in range(n):
+            if abs(A[i,j] - A_tras[i,j]) > 1e-03:
+                return False
+    return True
+
 def calculaLU(A):
     if A is None:
             return None, None, 0 
@@ -86,14 +97,34 @@ def inversa(A): #YA PROBADO
     return A_inv
 
 def calculaLDV(A): #YA PROBADA
-
     L,U, _ = calculaLU(A)
+
+    if L is None:
+        return None, None, None
+    
     U_tras = traspuesta(U)
     V_t,D, _  = calculaLU(U_tras)
+    if V_t is None:
+        return None, None, None
     V = traspuesta(V_t)
 
     return L, D, V
 
+def esSDP(A,atol=1e-10):
+    if A is None:
+        return False
+
+    if not esSimetrica(A):
+        return False  
+    _,D,_ = calculaLDV(A)
+
+    if D is None:
+        return False
+
+    for i in range(D.shape[0]):
+        if D[i][i] < atol:
+            return False
+    return True
 
 
     
