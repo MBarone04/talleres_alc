@@ -59,6 +59,8 @@ def traspuesta(A): #ya probada
 
 
 def esSimetrica(A): #ya probada
+    if A is None:
+        return False
     A_tras = traspuesta(A)
     res = True
     m,n = A.shape
