@@ -37,7 +37,7 @@ def esSimetrica(A): #ya probada
 
 def calculaLU(A):
     if A is None:
-            return None, None, 0 
+        return None, None, 0 
     
     cant_op = 1
     m,n=A.shape
