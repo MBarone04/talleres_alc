@@ -14,6 +14,16 @@ def traspuesta(A): #ya probada
             res[j,i] = A[i,j]
     return res 
 
+def diagonal(A): #ya probada
+    m, n = A.shape
+
+    res = np.zeros((m,n))
+    for i in range(m):
+        for j in range(n):
+            if i == j:
+                res[i,j] = A[i,j]
+    return res
+
 def calculaLU(A):
     if A is None:
             return None, None, 0 
@@ -74,6 +84,18 @@ def inversa(A): #YA PROBADO
     A_inv = traspuesta(A_inv)
 
     return A_inv
+
+def calculaLDV(A): #YA PROBADA
+
+    L,U, _ = calculaLU(A)
+    U_tras = traspuesta(U)
+    V_t,D, _  = calculaLU(U_tras)
+    V = traspuesta(V_t)
+
+    return L, D, V
+
+
+
     
     
         
