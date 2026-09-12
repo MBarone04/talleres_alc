@@ -40,8 +40,7 @@ def calculaLU(A):
             return None, None, 0 
     
     cant_op = 1
-    m=A.shape[0]
-    n=A.shape[1]
+    m,n=A.shape
     Ac = A.copy()
     
     if m!=n:
@@ -62,18 +61,29 @@ def calculaLU(A):
     return L, U, cant_op
 
 
-def res_tri(L,b,inferior = True):
+def res_tri(L,b,inferior = True): #YA PROBADO
+    if L is None or b is None:
+        return None
 
-    x = [0.0]* L.shape[0]
+    m, n = L.shape
+
+    if m != n or n != len(b):
+        return None
+    
+    x = np.zeros(n)
 
     if inferior:
-        for i in range(L.shape[0]):
+        for i in range(n):
+            if L[i][i] == 0:
+                return None
             suma = 0.0
             for j in range(i):
                 suma += x[j]*L[i][j]
             x[i] = (b[i] - suma)/L[i][i]
     else:
         for i in range(L.shape[0]-1,-1,-1):
+            if L[i][i] == 0:
+                            return None
             suma = 0.0
             for j in range(i+1,L.shape[0]):
                 suma += x[j]*L[i][j]
