@@ -163,6 +163,7 @@ V0 = np.array([[1,0,0],
                [1,1,0],
                [1,1+1e-3,1]]).T
 A = L0 @ D0 @ V0
+print(A)
 assert(esSDP(A,1e-3))
 
 print("-----ÉXITO!!!!\n")
