@@ -1,6 +1,6 @@
-from moduloALC import calculaLU, res_tri, inversa, calculaLDV, esSDP
+from moduloALC import calculaLU, res_tri, inversa, calculaLDV, esSDP,calculaCholesky
 import numpy as np
-
+import unittest
 # TESTS L04-LU
 
 # TESTS LU
@@ -169,3 +169,45 @@ assert(esSDP(A,1e-3))
 print("-----ÉXITO!!!!\n")
 print("---FINALIZADO LABO 4!---")
 
+
+class TestCalculaCholesky(unittest.TestCase):
+    
+    def test_matriz_valida_spd(self):
+        # Matriz simétrica definida positiva de 2x2
+        A = np.array([[4.0, 1.0], [1.0, 3.0]])
+        R = calculaCholesky(A)
+        
+        self.assertIsNotNone(R)
+        # Verificar que R sea triangular inferior
+        self.assertTrue(np.allclose(R - np.tril(R), 0))
+        # Verificar que R @ R.T sea igual a A
+        self.assertTrue(np.allclose(R @ R.T, A))
+
+    def test_matriz_identidad(self):
+        A = np.eye(3)
+        R = calculaCholesky(A)
+        self.assertIsNotNone(R)
+        self.assertTrue(np.allclose(R, np.eye(3)))
+
+    def test_matriz_no_simetrica(self):
+        A = np.array([[4.0, 2.0], [1.0, 3.0]])
+        R = calculaCholesky(A)
+        self.assertIsNone(R)
+
+    def test_matriz_no_cuadrada(self):
+        A = np.array([[4.0, 1.0, 0.0], [1.0, 3.0, 0.0]])
+        R = calculaCholesky(A)
+        self.assertIsNone(R)
+
+    def test_matriz_no_sdp(self):
+        # Matriz simétrica pero no definida positiva (autovalores negativos / det < 0)
+        A = np.array([[1.0, 2.0], [2.0, 1.0]])
+        R = calculaCholesky(A)
+        self.assertIsNone(R)
+
+    def test_entrada_none(self):
+        R = calculaCholesky(None)
+        self.assertIsNone(R)
+
+if __name__ == '__main__':
+    unittest.main()
