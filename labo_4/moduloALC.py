@@ -27,6 +27,9 @@ def diagonal(A): #ya probada
 def esSimetrica(A): #ya probada
     if A is None:
         return False
+    m,n = A.shape
+    if m != n:
+        return False
     A_tras = traspuesta(A)
     m,n = A.shape
     for i in range(m):
@@ -135,6 +138,46 @@ def esSDP(A,atol=1e-10):
         if D[i][i] < atol:
             return False
     return True
+def mult_matricial(A,B):
+    a,b = A.shape
+    c,d = B.shape
+
+    if b != c:
+        raise ValueError(
+            "Las columnas de A no coinciden con las filas de B"
+        )
+    res = np.zeros((a,d))
+
+    for i in range(a):
+        for j in range(d):
+            num = 0
+            for k in range(b):
+                num += A[i,k]*B[k,j]
+            res[i,j] = num
+
+    return res
+
+def calculaCholesky(A,atol=1e-10):
+    if A is None:
+        return None
+
+
+    if not esSDP(A,atol):
+        return None
+
+    else:
+        L,D,_ = calculaLDV(A)
+        if L is None or D is None:
+            return None
+        D = np.sqrt(D)
+        R = mult_matricial(L,D)
+
+    return R
+
+
+
+    
+    
 
 
     
