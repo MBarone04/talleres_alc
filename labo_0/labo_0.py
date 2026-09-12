@@ -61,15 +61,16 @@ def traspuesta(A): #ya probada
 def esSimetrica(A): #ya probada
     if A is None:
         return False
+    m,n = A.shape
+    if m != n:
+        return False
     A_tras = traspuesta(A)
-    res = True
     m,n = A.shape
     for i in range(m):
         for j in range(n):
-            if A[i,j] != A_tras[i,j]:
-                res = False
-                break
-    return res
+            if abs(A[i,j] - A_tras[i,j]) > 1e-03:
+                return False
+    return True
 
     
 
