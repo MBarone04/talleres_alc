@@ -142,10 +142,6 @@ def mult_matricial(A,B):
     a,b = A.shape
     c,d = B.shape
 
-    if b != c:
-        raise ValueError(
-            "Las columnas de A no coinciden con las filas de B"
-        )
     res = np.zeros((a,d))
 
     for i in range(a):
