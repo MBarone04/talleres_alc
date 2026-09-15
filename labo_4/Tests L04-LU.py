@@ -1,4 +1,4 @@
-from moduloALC import calculaLU, res_tri, inversa, calculaLDV, esSDP,calculaCholesky
+from labo_4 import calculaLU, res_tri, inversa, calculaLDV, esSDP,calculaCholesky
 import numpy as np
 import unittest
 # TESTS L04-LU
