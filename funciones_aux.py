@@ -58,3 +58,13 @@ def test_multiplicar_matrices():
 
 # Ejecutamos los tests
 test_multiplicar_matrices()
+
+def mult_vectorial(a,b):
+    if a == [] or b == []:
+        return 0
+    elif len(a) != len(b):
+        return 0
+    res = 0
+    for i in range(len(a)):
+        res += a[i]*b[i]
+    return res
