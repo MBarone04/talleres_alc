@@ -107,19 +107,43 @@ def QR_con_HH(A,tol=1e-12,extras=False):
     if m < n:
         return None, None
 
-    Q = A.copy()
+    R = A.copy()
+    Q = np.eye(m)
     R_matrices = {}
     Q_matrices = {}
-    for i in range(m):
-        u_i = A[i :,i].copy()
-        id = np.eye(m)
-        u_t = traspuesta(u_i)
-        H = id - (2*mult_matricial(u_i,u_t)/mult_matricial(u_t,u_i))
-        Q = mult_matricial(H,A)
+    for k in range(n):
+        x = R[k :,k].copy()
+        if x[0] >= 0:
+            alpha = -norma(x,2)
+        else:
+            alpha = norma(x,2)
+        u = x.copy()
+        u[0] -= alpha
+        if norma(u,2) > tol:
+            u = u/norma(u,2)
+            long_u = len(u)
+            id_sub = np.eye(long_u)
+            u_matriz = u.reshape(-1,1)
+            u_t = traspuesta(u_matriz)
+
+            H_k = id_sub -2*mult_matricial(u_matriz,u_t)
+
+            H_ = np.eye(m)
+            H_[k:,k:] = H_k
+
+            R = mult_matricial(H_,R)
+            H_t = traspuesta(H_)
+            Q = mult_matricial(Q,H_t)
+
+            R_matrices[k] = R.copy()
+            Q_matrices[k] = Q.copy()
+    if extras:
+        return Q,R,Q_matrices,R_matrices
+    else:
+        return Q,R
+
+
     
-
-
-
     """
     A una matriz de m x n (m>=n)
     tol la tolerancia con la que se filtran elementos nulos en R
@@ -139,6 +163,11 @@ def QR_con_HH(A,tol=1e-12,extras=False):
 
     """
 def calculaQR(A,metodo='RH',tol=1e-12):
+
+    if metodo == 'RH':
+        return QR_con_HH(A,tol,extras = False)
+    else:
+        return QR_con_GS(A,tol,retorna_nops=False)
     """
     A una matriz de n x n 
     tol la tolerancia con la que se filtran elementos nulos en R    
@@ -150,20 +179,6 @@ def calculaQR(A,metodo='RH',tol=1e-12):
 
 
 
-A2 = np.array([[1., 2.],
-               [3., 4.]])
-
-A3 = np.array([[1., 0., 1.],
-               [0., 1., 1.],
-               [1., 1., 0.]])
-
-A4 = np.array([[2., 0., 1., 3.],
-               [0., 1., 4., 1.],
-               [1., 0., 2., 0.],
-               [3., 1., 0., 2.]])
-
-Q,R = QR_con_GS(A2,tol=1e-12,retorna_nops=False)
-print(Q@R)
 
 
 
